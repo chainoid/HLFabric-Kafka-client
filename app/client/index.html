@@ -1,0 +1,188 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parsel Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: coral;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      }
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Hyperledger Fabric Postap Application</div>
+      <i id="right_header">Example Blockchain Application for Parsel Service </i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Query All Parsels in System</label>
+        <p><input id="queryAllParsels" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllParsels()"></p>
+      </div>
+
+      <table id="all_parsels" class="table" align="center">
+
+        <tr>
+          <th>ID</th>
+          <th>Sender</th>
+          <th>Sender TS</th>
+          <th>Sender branch</th>
+          <th>Receiver branch</th>
+          <th>Reseiver</th>
+          <th>Reseiver TS</th>
+        </tr>
+
+        <tr ng-repeat="parsel in all_parsels">
+          <td>{{parsel.Key}}</td>
+          <td>{{parsel.sender}}</td>
+          <td>{{parsel.senderTS}}</td>
+          <td>{{parsel.senderBranch}}</td>
+          <td>{{parsel.receiverBranch}}</td>
+          <td>{{parsel.receiver}}</td>
+          <td>{{parsel.receiverTS}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a details about Specific Parsel</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid Parsel Id</h5>
+
+        Enter a parsel number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="parsel_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryParsel()">
+      </div>
+
+      <table id="query_parsel" class="table" align="center">
+
+        <tr>
+          <th>Sender</th>
+          <th>Sender branch</th>
+          <th>Sender Timestamp</th>
+          <th>Receiver Timestamp</th>
+          <th>Receiver branch</th>
+          <th>Receiver</th>
+        </tr>
+
+        <tr>
+          <td>{{query_parsel.sender}}</td>
+          <td>{{query_parsel.senderBranch}}</td>
+          <td>{{query_parsel.senderTS}}</td>
+          <td>{{query_parsel.receiverTS}}</td>
+          <td>{{query_parsel.receiverBranch}}</td>
+          <td>{{query_parsel.receiver}}</td>
+        </tr>
+      </table>
+
+
+      <div class="form-group">
+        <label>Query Parsels by Sender</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_sender">Error: Please enter a valid Sender name</h5>
+
+               Enter a sender name: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="sender_name">
+        <input id="querySender" type="submit" value="Query" class="btn btn-primary" ng-click="querySender()">
+      </div>
+
+      <table id="sender_parsels" class="table" align="center">
+
+        <tr >
+          <th>Sender</th>
+          <th>Sender branch</th>
+          <th>Sender Timestamp</th>
+          <th>Receiver Timestamp</th>
+          <th>Receiver branch</th>
+          <th>Receiver</th>
+        </tr>
+
+        <tr ng-repeat="sender in sender_parsels">
+          <td>{{sender.sender}}</td>
+          <td>{{sender.senderBranch}}</td>
+          <td>{{sender.senderTS}}</td>
+          <td>{{sender.receiverTS}}</td>
+          <td>{{sender.receiverBranch}}</td>
+          <td>{{sender.receiver}}</td>
+        </tr>
+      </table>
+
+
+
+      <div class="form-group">
+        <label>Accept: Create Inital Parsel Record</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{add_parsel}}</h5>
+
+        <br>
+        Enter parsel id: <input class="form-control" type="text" placeholder="Ex: 211" ng-model="parsel.id">
+        Enter sender name: <input class="form-control" type="text" placeholder="Ex: John" ng-model="parsel.sender">
+        Enter sender branch: <input class="form-control" type="text" placeholder="Ex: 002" ng-model="parsel.senderBranch">
+        Enter sender timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="parsel.senderTS">
+        Enter receiver name: <input class="form-control" type="text" placeholder="Ex: John" ng-model="parsel.receiver">
+        Enter receiver branch: <input class="form-control" type="text" placeholder="Ex: 002" ng-model="parsel.receiverBranch">
+		Enter receiver timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="parsel.receiverTS">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="acceptParsel()">
+      </div>
+
+      <div class="form-group">
+        <label>Delivery: Change Status of Parsel Item and add Delivery Timestamp</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{delivery_parsel}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Parsel Id</h5>
+        Enter a parsel id from available list above: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
+        <!--  Enter delivery timestamp: <input class="form-control" name="assetSelect" placeholder="Ex: 2014090811" ng-model="holder.receiverTS"> -->
+        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="deliveryParsel()">
+      </div>
+
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>
