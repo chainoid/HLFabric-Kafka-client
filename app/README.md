@@ -1,19 +1,30 @@
 ## Hyperledger Fabric Sample Application - Parsel Service
 
 This application demonstrates the creation and transfer of parsel operation between customers using Hyperledger Fabric body  as supply chain.
-In this exercise we will set up the minimum number of nodes required to develop chaincode. It has a single peer and a single organization.
-
-if getting error about running ./startFabric.sh permission
-
-chmod a+x startFabric.sh
-
 
 ## Basic Network Config
-Note that this basic configuration uses pre-generated certificates and key material, and also has predefined transactions to initialize a channel named "mychannel".
+Note that this basic configuration uses pre-generated certificates and key material, and also has predefined transactions to initialize a channel named "posta-channel".
 
-To regenerate this material, simply run generate.sh.
+For install required node packages:
 
-To start the network, run start.sh. To stop it, run stop.sh To completely remove all incriminating evidence of the network on your system, run teardown.sh.
+app$ npm install
+
+For register Admin and User into certification center:
+
+app$ node registerAdmin.js
+app$ node registerUser.js
+
+After network started (please see the top level README.md) verify that all containers are up:
+
+app$ docker ps
+
+And finally run the client application:
+
+app$ node server.js
+
+The UI client will available on the link:
+
+http://localhost:9000
 
 
 ## Acknowledgements
