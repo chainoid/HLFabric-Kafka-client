@@ -1,6 +1,6 @@
-# Kafka Fabric Network
+# HLFabric-Kafka-client
 
-This repository holds the configuration and the sample chaincode for testing a kafka enabled network.
+Hyperledger Fabric with Kafka Consensus: network configuration and UI client example.
 
 ## Introduction
 
@@ -15,7 +15,8 @@ You already know how to work with Hyperledger Fabric and deploy chaincode to the
 ## Network Architecture
 
 We have a simple network configuration
-
+- 2 Certificate Authorities.
+- 3 Orderers.
 - 3 Orderers.
 - 2 Organizations.
 - 4 peers, 2 for each organization.
@@ -27,6 +28,25 @@ We have a simple network configuration
 ### Folder Structure
 ```
 ./
+├── app
+│   ├── client
+│   │   ├── app.js
+│   │   ├── favicon.png
+│   │   └── index.html
+│   ├── controller.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   ├── registerAdmin.js
+│   ├── registerUser.js
+│   ├── routes.js
+│   ├── server.js
+│   └── src
+│       ├── acceptParsel.js
+│       ├── deliveryParsel.js
+│       ├── queryAllParsels.js
+│       ├── queryParsel.js
+│       └── querySender.js
 ├── bin
 │   ├── configtxgen
 │   ├── configtxlator
@@ -36,18 +56,19 @@ We have a simple network configuration
 │   ├── orderer
 │   └── peer
 ├── chaincode
-│   └── sacc.go
+│   └── postap.go
+├── cleanimages.sh
+├── generate.sh
+├── install.sh
+├── LICENSE
 ├── network-config
 │   ├── configtx.yaml
 │   ├── crypto-config.yaml
 │   ├── docker-compose-base.yml
 │   ├── docker-compose-cli.yml
 │   ├── docker-compose-couchdb.yml
-│   ├── docker-compose-kafka.yml
-│   ├── docker-compose-peer-org3.yml
-│   └── docker-compose-solo.yml
-├── generate.sh
-├── install.sh
+│   └── docker-compose-kafka.yml
+├── queryAllParsels.sh
 ├── README.md
 ├── start.sh
 ├── stop.sh
@@ -55,12 +76,14 @@ We have a simple network configuration
 ├── test.sh
 └── update.sh
 
-3 directories, 24 files
+6 directories, 41 files
+
 ```
 ### Description
 
+- `app/` tiny client written in node.js.
 - `bin/` contains all the binaries required for generating crypto material.
-- `chaincode/` contains the sacc chaincode, present in `fabric-samples`.
+- `chaincode/` contains the postap chaincode, easy parsel delivery example.
 - `network-config/` contains all the configuration `yaml` files for the network.
 - `generate.sh` will generate all the crypto-material required for the network to run.
 - `install.sh` will install and instantiate the chaincode.
@@ -72,7 +95,7 @@ We have a simple network configuration
 
 ### Steps
 
-- Make sure you've grabbed all the [prerequisites](http://hyperledger-fabric.readthedocs.io/en/release-1.1/prereqs.html) and [samples](http://hyperledger-fabric.readthedocs.io/en/release-1.1/samples.html#) for running hyperledger fabric.
+- Make sure you've grabbed all the [prerequisites](http://hyperledger-fabric.readthedocs.io/en/release-1.2/prereqs.html) and [samples](http://hyperledger-fabric.readthedocs.io/en/release-1.2/samples.html#) for running hyperledger fabric.
 - In your `$GOPATH`, make sure you have the hyperledger fabric source.
 ```bash
 cd $GOPATH/src/github.com/
@@ -82,7 +105,7 @@ git clone https://github.com/hyperledger/fabric.git
 ```
 - Clone this repository and enter the directory.
 ```bash
-git clone https://github.com/chainoid/Kafka-Fabric-Network.git
+git clone https://github.com/chainoid/HLFabric-Kafka-client.git
 cd Kafka-Fabric-Network
 ```
 NOTE : Give exec permissions to the shell scripts
