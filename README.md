@@ -134,3 +134,8 @@ docker ps
 ```bash
 ./stop.sh
 ```
+- For Instruction how to run a client see /app/README.md
+```bash
+cd app
+cat README.md
+```
