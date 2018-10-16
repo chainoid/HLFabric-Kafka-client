@@ -125,6 +125,36 @@
         </tr>
       </table>
 
+      <div class="form-group">
+        <label>Query History of Parsel</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_history">Error: Cannot load history for this Parsel ID</h5>
+  
+               Enter a parsel ID: <input id="parselID" class="form-control" type="text" placeholder="Ex: 3" ng-model="historyId">
+        <input id="historyParsel" type="submit" value="History" class="btn btn-primary" ng-click="historyParsel()">
+      </div>
+  
+      <table id="history_parsel" class="table" align="center">
+        <tr >
+          <th>Sender</th>
+          <th>Sender branch</th>
+          <th>Sender Timestamp</th>
+          <th>Receiver Timestamp</th>
+          <th>Receiver branch</th>
+          <th>Receiver</th> 
+          <!--th>TxId</th-->
+        </tr>
+        <tr ng-repeat="rec in history_parsel">
+              
+
+          <td>{{rec.sender}}</td>
+          <td>{{rec.senderBranch}}</td> 
+          <td>{{rec.senderTS}}</td>
+          <td>{{rec.receiverTS}}</td>
+          <td>{{rec.receiverBranch}}</td>
+          <td>{{rec.receiver}}</td>
+          <!--td>{{rec.TxId}}</td-->  
+        </tr>
+      </table>
 
       <div class="form-group">
         <label>Query Parsels by Sender</label><br>
@@ -168,20 +198,22 @@
         Enter sender timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="parsel.senderTS">
         Enter receiver name: <input class="form-control" type="text" placeholder="Ex: John" ng-model="parsel.receiver">
         Enter receiver branch: <input class="form-control" type="text" placeholder="Ex: 002" ng-model="parsel.receiverBranch">
-		Enter receiver timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="parsel.receiverTS">
+	      Enter receiver timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="parsel.receiverTS">
         <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="acceptParsel()">
       </div>
 
       <div class="form-group">
         <label>Delivery: Change Status of Parsel Item and add Delivery Timestamp</label><br>
         <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{delivery_parsel}}</h5>
-        <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Parsel Id</h5>
+        <h5 style="color:red;margin-bottom:2%"   id="error_holder">Error: Please enter a valid Parsel Id</h5>
         Enter a parsel id from available list above: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
         <!--  Enter delivery timestamp: <input class="form-control" name="assetSelect" placeholder="Ex: 2014090811" ng-model="holder.receiverTS"> -->
         <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="deliveryParsel()">
       </div>
+    
 
-    </div>
+  </div>
+
   </body>
     <!-- requiring the angular page -->
     <script type="text/javascript" src="app.js"> </script>

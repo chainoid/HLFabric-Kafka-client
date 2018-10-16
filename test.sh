@@ -15,6 +15,6 @@ docker exec -it cli peer chaincode invoke -o orderer2.example.com:7050 -n postap
 docker exec -it cli peer chaincode invoke -o orderer2.example.com:7050 -n postap -c '{"Args":["querySender","Ben"]}' -C posta-channel
 
 # # # Delivery first parsel in list (only once)
-docker exec -it cli peer chaincode invoke -o orderer2.example.com:7050 -n postap -c '{"Args":["deliveryParsel","1",""]}' -C posta-channel
+#docker exec -it cli peer chaincode invoke -o orderer2.example.com:7050 -n postap -c '{"Args":["deliveryParsel","1",""]}' -C posta-channel
 
 

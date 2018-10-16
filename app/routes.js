@@ -16,6 +16,9 @@ module.exports = function(app){
   app.get('/delivery_parsel/:holder', function(req, res){
     parsel.delivery_parsel(req, res);
   });
+  app.get('/history_parsel/:historyId', function(req, res){
+    parsel.history_parsel(req, res);
+  });
   app.get('/get_sender/:name', function(req, res){
     parsel.get_sender(req, res);
   })

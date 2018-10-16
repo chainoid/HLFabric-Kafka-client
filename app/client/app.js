@@ -12,6 +12,8 @@ app.controller('appController', function($scope, appFactory){
 	$("#error_holder").hide();
 	$("#error_query").hide();
 	$("#error_sender").hide();
+	$("#error_history").hide();
+
 	
 	$scope.queryAllParsels = function(){
 
@@ -67,6 +69,32 @@ app.controller('appController', function($scope, appFactory){
 				$("#error_sender").show();
 			} else{
 				$("#error_sender").hide();
+			}
+		});
+	}
+	
+	$scope.historyParsel = function(){
+
+		var historyId = $scope.historyId;
+
+		appFactory.historyParsel(historyId, function(data){
+						           
+			var array = [];
+			for (var i = 0; i < data.length; i++){
+				//parseInt(data[i].TxId);
+				data[i].Record.Key = parseInt(i);
+				array.push(data[i].Record);
+			}
+			array.sort(function(a, b) {
+			    return parseFloat(a.Key) - parseFloat(b.Key);
+			});
+			$scope.history_parsel = array;
+			
+			if (data  == "No history for parsel"){
+				console.log()
+				$("#error_history").show();
+			} else{
+				$("#error_history").hide();
 			}
 		});
 	}
@@ -131,12 +159,19 @@ app.factory('appFactory', function($http){
 		});
 	}
 
+	factory.historyParsel = function(historyId, callback){
+    	$http.get('/history_parsel/'+historyId).success(function(output){
+			callback(output)
+		});
+	}
+
     factory.querySender = function(name, callback){
     	$http.get('/get_sender/'+name).success(function(output){
 			callback(output)
 		});
 	}
-    
+		
+	
 
 	return factory;
 });
