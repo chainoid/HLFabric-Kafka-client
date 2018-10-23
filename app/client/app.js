@@ -21,11 +21,11 @@ app.controller('appController', function($scope, appFactory){
 			var array = [];
 			for (var i = 0; i < data.length; i++){
 				parseInt(data[i].Key);
-				data[i].Record.Key = parseInt(data[i].Key);
+				data[i].Record.Key = data[i].Key;
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
-			    return parseFloat(a.Key) - parseFloat(b.Key);
+			    return a.senderTS.localeCompare(b.senderTS);
 			});
 			$scope.all_parsels = array;
 		});
@@ -42,7 +42,7 @@ app.controller('appController', function($scope, appFactory){
 				console.log()
 				$("#error_query").show();
 			} else{
-				$("#error_query").hide();
+				$("#error_query").hide();senderTS
 			}
 		});
 	}
@@ -60,7 +60,7 @@ app.controller('appController', function($scope, appFactory){
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
-			    return parseFloat(a.Key) - parseFloat(b.Key);
+			    return a.senderTS.localeCompare(b.senderTS);
 			});
 			$scope.sender_parsels = array;
 			
@@ -86,7 +86,7 @@ app.controller('appController', function($scope, appFactory){
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
-			    return parseFloat(a.Key) - parseFloat(b.Key);
+			    return a.senderTS.localeCompare(b.senderTS);
 			});
 			$scope.history_parsel = array;
 			
@@ -150,7 +150,7 @@ app.factory('appFactory', function($http){
 		});
 	}
 
-	factory.deliveryParsel = function(data, callback){
+	factory.deliveryParsel = function(data, callback){senderTS
 
 		var holder = data.id + "-" + data.receiverTS;
 
