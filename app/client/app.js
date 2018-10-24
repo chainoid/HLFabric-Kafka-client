@@ -42,7 +42,7 @@ app.controller('appController', function($scope, appFactory){
 				console.log()
 				$("#error_query").show();
 			} else{
-				$("#error_query").hide();senderTS
+				$("#error_query").hide();
 			}
 		});
 	}
@@ -150,7 +150,7 @@ app.factory('appFactory', function($http){
 		});
 	}
 
-	factory.deliveryParsel = function(data, callback){senderTS
+	factory.deliveryParsel = function(data, callback){
 
 		var holder = data.id + "-" + data.receiverTS;
 
