@@ -106,9 +106,7 @@ func (s *SmartContract) queryParsel(APIstub shim.ChaincodeStubInterface, args []
 func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Response {
 	parsel := []Parsel{
 		Parsel{Sender: "Alex", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "001", Receiver: "Miriam", ReceiverTS: "", ReceiverBranch: "101"},
-		Parsel{Sender: "Ben", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "002", //buffer.WriteString("{\"Key\":")
-		//buffer.WriteString("\"")
-		//buffer.WriteString("\"")Receiver: "Elvis", ReceiverTS: "", ReceiverBranch: "102"},
+		Parsel{Sender: "Ben", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "002", Receiver: "Elvis", ReceiverTS: "", ReceiverBranch: "102"},
 		Parsel{Sender: "Charly", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "003", Receiver: "Elvis", ReceiverTS: "", ReceiverBranch: "103"},
 		Parsel{Sender: "Elvis", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "005", Receiver: "Alex", ReceiverTS: "", ReceiverBranch: "105"},
 		Parsel{Sender: "Sega", SenderTS: time.Now().Format(time.RFC3339), SenderBranch: "005", Receiver: "Mary", ReceiverTS: "", ReceiverBranch: "105"},
@@ -208,9 +206,7 @@ func (s *SmartContract) querySender(APIstub shim.ChaincodeStubInterface, args []
 
 	startKey := "0"
 	endKey := "9999"
-//buffer.WriteString("{\"Key\":")
-		//buffer.WriteString("\"")
-		//buffer.WriteString("\"")
+
 	resultsIterator, err := APIstub.GetStateByRange(startKey, endKey)
 	if err != nil {
 		return shim.Error(err.Error())
@@ -220,9 +216,7 @@ func (s *SmartContract) querySender(APIstub shim.ChaincodeStubInterface, args []
 	// buffer is a JSON array containing QueryResults
 	var buffer bytes.Buffer
 
-	buffer.WriteString("[")//buffer.WriteString("{\"Key\":")
-	//buffer.WriteString("\"")
-	//buffer.WriteString("\"")
+	buffer.WriteString("[")
 
 	bArrayMemberAlreadyWritten := false
 	for resultsIterator.HasNext() {
