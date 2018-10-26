@@ -52,8 +52,7 @@
       }
       table {
           font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
+          
       }
       td, th {
           border: 1px solid #dddddd;
@@ -98,25 +97,28 @@
           <th>Receiver branch</th>
           <th>Receiver</th>
           <th>Receiver TS</th>
+          <th></th>
         </tr>
 
         <tr ng-repeat="parsel in all_parsels">
-          <td>{{parsel.Key}}</td>
-          <td>{{parsel.sender}}</td>
+          <td><a  href="" ng-model="query_parsel"   ng-click="showParselParams(parsel)" >{{parsel.Key}}</a></td> 
+          <td><a  href="" ng-model="sender_parsels" ng-click="showSenderParsels(parsel)">{{parsel.sender}}</a></td> 
           <td>{{parsel.senderTS}}</td>
-          <td>{{parsel.senderBranch}}</td> <!--  Enter delivery timestamp: <input class="form-control" name="assetSelect" placeholder="Ex: 2014090811" ng-model="holder.receiverTS"> -->
+          <td>{{parsel.senderBranch}}</td> 
           <td>{{parsel.receiverBranch}}</td>
           <td>{{parsel.receiver}}</td>
           <td>{{parsel.receiverTS}}</td>
+          <td><a  href="" ng-model="history_parsel" ng-click="showHistoryParsel(parsel)">History</a></td>
         </tr>
       </table>
    
       <div class="form-group">
-        <label>Query a details about Specific Parsel</label><br>
+        <label>Query a details about Specific Parsel </label><br>
         <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid Parsel Id</h5>
-
-        Enter a parsel number: <input id="queryParselId" class="form-control input-field" type="text" placeholder=" Ex: 1" ng-model="parsel_id">
+        <!--
+        Enter a parsel ID: <input id="queryParselId" class="form-control input-field" type="text" placeholder=" Ex: 1" ng-model="parsel_id">
         <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryParsel()">
+        -->
       </div>
 
       <table id="query_parsel" class="table" align="center">
@@ -140,12 +142,13 @@
         </tr>
       </table>
 
-      <div class="form-group">
+      <div class="form-group"  >
         <label>Query History of Parsel</label><br>
         <h5 style="color:red;margin-bottom:2%" id="error_history">Error: Cannot load history for this Parsel ID</h5>
-  
+        <!--
                Enter a parsel ID: <input id="parselID" class="form-control input-field" type="text" placeholder=" Ex: 2" ng-model="historyId">
         <input id="historyParsel" type="submit" value="History" class="btn btn-primary" ng-click="historyParsel()">
+        -->
       </div>
   
       <table id="history_parsel" class="table" align="center">
@@ -159,8 +162,6 @@
           <!--th>TxId</th-->
         </tr>
         <tr ng-repeat="rec in history_parsel">
-              
-
           <td>{{rec.sender}}</td>
           <td>{{rec.senderBranch}}</td> 
           <td>{{rec.senderTS}}</td>
@@ -174,12 +175,13 @@
       <div class="form-group">
         <label>Query Parsels by Sender</label><br>
         <h5 style="color:red;margin-bottom:2%" id="error_sender">Error: Please enter a valid Sender name</h5>
+        <!--
             Enter a sender name: <input id="createName" class="form-control input-field" type="text" placeholder=" Ex: Alex" ng-model="sender_name">
         <input id="querySender" type="submit" value="Query" class="btn btn-primary" ng-click="querySender()">
+        -->
       </div>
 
       <table id="sender_parsels" class="table" align="center">
-
         <tr >
           <th>Sender</th>
           <th>Sender branch</th>
@@ -188,7 +190,6 @@
           <th>Receiver branch</th>
           <th>Receiver</th>
         </tr>
-
         <tr ng-repeat="sender in sender_parsels">
           <td>{{sender.sender}}</td>
           <td>{{sender.senderBranch}}</td>
@@ -199,21 +200,15 @@
         </tr>
       </table>
 
-
-
       <div class="form-group">
         <label>Accept: Create Inital Parsel Record</label>
         <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{add_parsel}}</h5>
-
         <br>
-        <!--Enter parsel id: <input class="form-control input-field" type="text" placeholder=" Ex: 211" ng-model="parsel.id">-->
         Enter sender name: <input class="form-control input-field" type="text" placeholder=" Ex: John" ng-model="parsel.sender">
         Enter sender branch: <input class="form-control input-field" type="text" placeholder=" Ex: 002" ng-model="parsel.senderBranch">
-        <!--Enter sender timestamp: <input class="form-control input-field" type="text" placeholder="Ex: 4982342301" ng-model="parsel.senderTS">-->
         Enter receiver name: <input class="form-control input-field" type="text" placeholder=" Ex: John" ng-model="parsel.receiver">
         Enter receiver branch: <input class="form-control input-field" type="text" placeholder=" Ex: 002" ng-model="parsel.receiverBranch">
-	      <!--Enter receiver timestamp: <input class="form-control input-field" type="text" placeholder="Ex: 4982342301" ng-model="parsel.receiverTS">-->
-        <input id="acceptParselId" type="submit" value="Create" class="btn btn-primary" ng-click="acceptParsel()">
+	      <input id="acceptParselId" type="submit" value="Create" class="btn btn-primary" ng-click="acceptParsel()">
       </div>
 
       <div class="form-group">

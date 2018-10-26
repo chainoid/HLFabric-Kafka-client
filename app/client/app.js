@@ -13,14 +13,13 @@ app.controller('appController', function($scope, appFactory){
 	$("#error_query").hide();
 	$("#error_sender").hide();
 	$("#error_history").hide();
-
-	
+		
 	$scope.queryAllParsels = function(){
 
 		appFactory.queryAllParsels(function(data){
 			var array = [];
 			for (var i = 0; i < data.length; i++){
-				parseInt(data[i].Key);
+				//parseInt(data[i].Key);
 				data[i].Record.Key = data[i].Key;
 				array.push(data[i].Record);
 			}
@@ -29,6 +28,10 @@ app.controller('appController', function($scope, appFactory){
 			});
 			$scope.all_parsels = array;
 		});
+
+		$("#history_parsel").hide();
+		$("#query_parsel").hide();
+		$("#sender_parsels").hide();
 	}
 
 	$scope.queryParsel = function(){
@@ -47,6 +50,29 @@ app.controller('appController', function($scope, appFactory){
 		});
 	}
 
+	$scope.showParselParams = function(parsel){
+		
+		$("#history_parsel").hide();
+		$("#sender_parsels").hide();
+		
+		//alert("   showParselParams " + parsel.Key );
+
+		var id = parsel.Key;
+
+		appFactory.queryParsel(id, function(data){
+			$scope.query_parsel = data;
+
+			if ($scope.query_parsel == "Could not locate parsel"){
+				console.log()
+				$("#error_query").show();
+			} else{
+				$("#error_query").hide();
+			}
+		});
+
+		$("#query_parsel").show();
+	}
+
 	$scope.querySender = function(){
 
 		var name = $scope.sender_name;
@@ -55,13 +81,14 @@ app.controller('appController', function($scope, appFactory){
 						
 			var array = [];
 			for (var i = 0; i < data.length; i++){
-				parseInt(data[i].Key);
-				data[i].Record.Key = parseInt(data[i].Key);
+				//parseInt(data[i].Key);
+				data[i].Record.Key = data[i].Key;
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
 			    return a.senderTS.localeCompare(b.senderTS);
 			});
+
 			$scope.sender_parsels = array;
 			
 			if (data  == "No parsels for sender"){
@@ -71,18 +98,84 @@ app.controller('appController', function($scope, appFactory){
 				$("#error_sender").hide();
 			}
 		});
+
+		$("#sender_parsels").show();
+	}
+
+    $scope.showSenderParsels = function(parsel){
+
+		$("#query_parsel").hide();
+		$("#history_parsel").hide();
+
+		//alert(" ShowSenderParsels " + parsel.sender );
+
+		var name = parsel.sender;
+
+		appFactory.querySender(name, function(data){
+						
+			var array = [];
+			for (var i = 0; i < data.length; i++){
+				//parseInt(data[i].Key);
+				data[i].Record.Key = data[i].Key;
+				array.push(data[i].Record);
+			}
+			array.sort(function(a, b) {
+			    return a.senderTS.localeCompare(b.senderTS);
+			});
+
+			$scope.sender_parsels = array;
+			
+			if (data  == "No parsels for sender"){
+				console.log()
+				$("#error_sender").show();
+			} else{
+				$("#error_sender").hide();
+			}
+		});
+
+		$("#sender_parsels").show();
 	}
 	
 	$scope.historyParsel = function(){
-
+		
 		var historyId = $scope.historyId;
 
 		appFactory.historyParsel(historyId, function(data){
 						           
 			var array = [];
 			for (var i = 0; i < data.length; i++){
-				//parseInt(data[i].TxId);
 				data[i].Record.Key = parseInt(i);
+				array.push(data[i].Record);
+			}
+			array.sort(function(a, b) {
+			    return a.senderTS.localeCompare(b.senderTS);
+			});
+			$scope.history_parsel = array;
+			
+			if (data  == "No history for parsel"){
+				console.log()
+				$("#error_history").show();
+			} else{alert(" HistoryParsel!!!!");
+				$("#error_history").hide();
+			}
+		});
+	}
+
+	$scope.showHistoryParsel = function(parsel){
+
+		$("#query_parsel").hide();
+		$("#sender_parsels").hide();
+
+		//alert(" ShowHistoryParsel for ID=" + parsel.Key);
+
+		var historyId = parsel.Key;
+
+		appFactory.historyParsel(historyId, function(data){
+						           
+			var array = [];
+			for (var i = 0; i < data.length; i++){
+				//parseInt(data[i].TxId);
+				data[i].Record.Key = data[i].Key;
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
@@ -97,7 +190,11 @@ app.controller('appController', function($scope, appFactory){
 				$("#error_history").hide();
 			}
 		});
+
+		$("#history_parsel").show();
+		$("#history_parsel_id").show();
 	}
+
 
 	$scope.acceptParsel = function(){
 
