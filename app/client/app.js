@@ -13,7 +13,11 @@ app.controller('appController', function($scope, appFactory){
 	$("#error_query").hide();
 	$("#error_sender").hide();
 	$("#error_history").hide();
-		
+	$("#all_parsels").hide();
+	$("#query_parsel").hide();
+	$("#history_parsel").hide();
+	$("#sender_parsels").hide();
+			
 	$scope.queryAllParsels = function(){
 
 		appFactory.queryAllParsels(function(data){
@@ -32,6 +36,8 @@ app.controller('appController', function($scope, appFactory){
 		$("#history_parsel").hide();
 		$("#query_parsel").hide();
 		$("#sender_parsels").hide();
+
+		$("#all_parsels").show();
 	}
 
 	$scope.queryParsel = function(){
@@ -54,9 +60,7 @@ app.controller('appController', function($scope, appFactory){
 		
 		$("#history_parsel").hide();
 		$("#sender_parsels").hide();
-		
-		//alert("   showParselParams " + parsel.Key );
-
+				
 		var id = parsel.Key;
 
 		appFactory.queryParsel(id, function(data){
