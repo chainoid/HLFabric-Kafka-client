@@ -153,22 +153,26 @@
   
       <table id="history_parsel" class="table" align="center">
         <tr >
+          <th>Tx Timestamp</th>
+          <th>Tx Id</th>
           <th>Sender</th>
           <th>Sender branch</th>
           <th>Sender Timestamp</th>
           <th>Receiver Timestamp</th>
           <th>Receiver branch</th>
           <th>Receiver</th> 
-          <!--th>TxId</th-->
+          <th>Deleted</th>
         </tr>
         <tr ng-repeat="rec in history_parsel">
+          <td>{{rec.TxTS}}</td>
+          <td>{{rec.TxId}}</td>
           <td>{{rec.sender}}</td>
           <td>{{rec.senderBranch}}</td> 
           <td>{{rec.senderTS}}</td>
           <td>{{rec.receiverTS}}</td>
           <td>{{rec.receiverBranch}}</td>
           <td>{{rec.receiver}}</td>
-          <!--td>{{rec.TxId}}</td-->  
+          <td>{{rec.IsDelete}}</td>  
         </tr>
       </table>
 

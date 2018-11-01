@@ -13,11 +13,13 @@ app.controller('appController', function($scope, appFactory){
 	$("#error_query").hide();
 	$("#error_sender").hide();
 	$("#error_history").hide();
+	
 	$("#all_parsels").hide();
 	$("#query_parsel").hide();
-	$("#history_parsel").hide();
 	$("#sender_parsels").hide();
-			
+	$("#history_parsel").hide();
+	
+		
 	$scope.queryAllParsels = function(){
 
 		appFactory.queryAllParsels(function(data){
@@ -36,7 +38,6 @@ app.controller('appController', function($scope, appFactory){
 		$("#history_parsel").hide();
 		$("#query_parsel").hide();
 		$("#sender_parsels").hide();
-
 		$("#all_parsels").show();
 	}
 
@@ -60,7 +61,7 @@ app.controller('appController', function($scope, appFactory){
 		
 		$("#history_parsel").hide();
 		$("#sender_parsels").hide();
-				
+		
 		var id = parsel.Key;
 
 		appFactory.queryParsel(id, function(data){
@@ -110,13 +111,11 @@ app.controller('appController', function($scope, appFactory){
 
 		$("#query_parsel").hide();
 		$("#history_parsel").hide();
-
-		//alert(" ShowSenderParsels " + parsel.sender );
-
+		
 		var name = parsel.sender;
 
-		appFactory.querySender(name, function(data){
-						
+		appFactory.querySender(name, function(data){	$("#query_parsel").hide();
+								
 			var array = [];
 			for (var i = 0; i < data.length; i++){
 				//parseInt(data[i].Key);
@@ -144,11 +143,12 @@ app.controller('appController', function($scope, appFactory){
 		
 		var historyId = $scope.historyId;
 
+		
 		appFactory.historyParsel(historyId, function(data){
 						           
 			var array = [];
 			for (var i = 0; i < data.length; i++){
-				data[i].Record.Key = parseInt(i);
+				
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {
@@ -156,6 +156,9 @@ app.controller('appController', function($scope, appFactory){
 			});
 			$scope.history_parsel = array;
 			
+
+
+
 			if (data  == "No history for parsel"){
 				console.log()
 				$("#error_history").show();
@@ -169,17 +172,18 @@ app.controller('appController', function($scope, appFactory){
 
 		$("#query_parsel").hide();
 		$("#sender_parsels").hide();
-
-		//alert(" ShowHistoryParsel for ID=" + parsel.Key);
-
+		
 		var historyId = parsel.Key;
 
 		appFactory.historyParsel(historyId, function(data){
 						           
 			var array = [];
 			for (var i = 0; i < data.length; i++){
-				//parseInt(data[i].TxId);
-				data[i].Record.Key = data[i].Key;
+			
+				data[i].Record.TxId = data[i].TxId;
+				data[i].Record.TxTS = data[i].TxTS;
+				data[i].Record.IsDelete = data[i].IsDelete;
+			
 				array.push(data[i].Record);
 			}
 			array.sort(function(a, b) {

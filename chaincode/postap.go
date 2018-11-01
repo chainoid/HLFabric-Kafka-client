@@ -82,24 +82,6 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 }
 
 /*
-  * The queryParsel method *
-  Used to view the records of one particular parsel
-  It takes one argument -- the key for the parsel in question
-*/
-func (s *SmartContract) queryParsel(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	parselAsBytes, _ := APIstub.GetState(args[0])
-	if parselAsBytes == nil {
-		return shim.Error("Could not locate parsel")
-	}
-	return shim.Success(parselAsBytes)
-}
-
-/*
   * The initLedger method *
  Will add test data (5 parsels)to our network
 */
@@ -126,9 +108,28 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 }
 
 /*
-  * The acceptParsel method *
-	In the Post office would use to accept parsel from sender person.
-	This method takes in five arguments (attributes to be saved in the ledger).
+  * The queryParsel method *
+  Used to view the records of one particular parsel
+  It takes one argument -- the key for the parsel in question
+*/
+func (s *SmartContract) queryParsel(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
+	}
+
+	parselAsBytes, err := APIstub.GetState(args[0])
+	if err != nil {
+		return shim.Error("Could not locate parsel")
+	}
+
+	return shim.Success(parselAsBytes)
+}
+
+/*
+  * The acceptParsel method *TxId           string `json:"txId"`
+	In the Post office would TxId           string `json:"txId"`
+	This method takes in fiveTxId           string `json:"txId"`edger).
 */
 
 func (s *SmartContract) acceptParsel(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
@@ -219,6 +220,7 @@ func (s *SmartContract) querySender(APIstub shim.ChaincodeStubInterface, args []
 	buffer.WriteString("[")
 
 	bArrayMemberAlreadyWritten := false
+
 	for resultsIterator.HasNext() {
 		queryResponse, err := resultsIterator.Next()
 		if err != nil {
@@ -253,7 +255,7 @@ func (s *SmartContract) querySender(APIstub shim.ChaincodeStubInterface, args []
 	buffer.WriteString("]")
 
 	if bArrayMemberAlreadyWritten == false {
-		return shim.Error("No parsels for sender")
+		return shim.Error(err.Error())
 	}
 
 	fmt.Printf("- querySender:\n%s\n", buffer.String())
@@ -320,21 +322,25 @@ func (s *SmartContract) historyRecord(APIstub shim.ChaincodeStubInterface, args 
 		if bArrayMemberAlreadyWritten == true {
 			buffer.WriteString(",")
 		}
-		//buffer.WriteString("{\"Key\":")
-		//buffer.WriteString("\"")
-		//buffer.WriteString("\
 
 		json.Marshal(queryResponse)
+
+		// Some extra historical fields
 		buffer.WriteString("{\"TxId\":")
 		buffer.WriteString("\"")
-		buffer.WriteString(queryResponse.TxId)
+		buffer.WriteString(string(queryResponse.TxId))
 		buffer.WriteString("\"")
+		buffer.WriteString(",\"TxTS\":")
+		buffer.WriteString("\"")
+		buffer.WriteString(time.Unix(queryResponse.Timestamp.Seconds, 0).Format(time.RFC3339))
+		buffer.WriteString("\"")
+		buffer.WriteString(",\"IsDelete\":")
+		buffer.WriteString(strconv.FormatBool(queryResponse.IsDelete))
 
+		// Record the body of JSON object, so we write as-is
 		buffer.WriteString(", \"Record\":")
 		buffer.WriteString(string(queryResponse.Value))
-		buffer.WriteString(", \"IsDelete\":")
-		// Record is a JSON object, so we write as-is
-		buffer.WriteString(strconv.FormatBool(queryResponse.IsDelete))
+
 		buffer.WriteString("}")
 
 		bArrayMemberAlreadyWritten = true
