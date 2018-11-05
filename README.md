@@ -17,7 +17,6 @@ You already know how to work with Hyperledger Fabric and deploy chaincode to the
 We have a simple network configuration
 - 2 Certificate Authorities.
 - 3 Orderers.
-- 3 Orderers.
 - 2 Organizations.
 - 4 peers, 2 for each organization.
 - 4 Kafka broker instances.
