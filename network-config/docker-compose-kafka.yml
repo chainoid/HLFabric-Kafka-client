@@ -109,10 +109,9 @@ services:
             - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
             - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
             - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        volumes:
-            - ../../data/kafka0:/tmp/kafka-logs
-         
+
           # Uncomment for use host's FS
+          #volumes:
           #  - /var/hyperledger/kafka0:/tmp/kafka-logs
     
         depends_on:
@@ -135,10 +134,9 @@ services:
             - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
             - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
             - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        volumes:
-            - ../../data/kafka1:/tmp/kafka-logs
-         # Uncomment for use host's FS
-         #   - /var/hyperledger/kafka1:/tmp/kafka-logs
+        # Uncomment for use host's FS
+        #volumes:
+        #   - /var/hyperledger/kafka1:/tmp/kafka-logs
         
         depends_on:
             - zookeeper0
