@@ -10,7 +10,8 @@
         "express": "latest",
         "fabric-ca-client": "^1.2.1",
         "fabric-client": "^1.3.0",
-        "grpc": "^1.12.3"
+        "grpc": "^1.12.3",
+        "system-sleep": "^1.3.6"
     },
     "license": "Apache-2.0",
     "keywords": [
