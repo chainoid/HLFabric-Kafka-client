@@ -13,7 +13,7 @@ module.exports = function(app){
   app.get('/get_all_parsels', function(req, res){
     parsel.get_all_parsels(req, res);
   });
-  app.get('/delivery_parsel/:holder', function(req, res){
+  app.get('/delivery_parsel/:parsel', function(req, res){
     parsel.delivery_parsel(req, res);
   });
   app.get('/history_parsel/:historyId', function(req, res){

@@ -206,20 +206,21 @@
 
       <div class="form-group">
         <label>Accept: Create Inital Parsel Record</label>
-        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{add_parsel}}</h5>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{accepted_parsel_id}}</h5>
         <br>
         Enter sender name: <input class="form-control input-field" type="text" placeholder=" Ex: John" ng-model="parsel.sender">
         Enter sender branch: <input class="form-control input-field" type="text" placeholder=" Ex: 002" ng-model="parsel.senderBranch">
-        Enter receiver name: <input class="form-control input-field" type="text" placeholder=" Ex: John" ng-model="parsel.receiver">
-        Enter receiver branch: <input class="form-control input-field" type="text" placeholder=" Ex: 002" ng-model="parsel.receiverBranch">
+        Enter receiver name: <input class="form-control input-field" type="text" placeholder=" Ex: Mary" ng-model="parsel.receiver">
+        Enter receiver branch: <input class="form-control input-field" type="text" placeholder=" Ex: 003" ng-model="parsel.receiverBranch">
 	      <input id="acceptParselId" type="submit" value="Create" class="btn btn-primary" ng-click="acceptParsel()">
       </div>
 
       <div class="form-group">
         <label>Delivery: Change Status of Parsel Item and add Delivery Timestamp</label><br>
-        <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{delivery_parsel}}</h5>
-        <h5 style="color:red;margin-bottom:2%"   id="error_holder">Error: Please enter a valid Parsel Id</h5>
-        Enter a parsel id from available list above: <input class="form-control input-field" name="assetSelect" placeholder=" Ex: 1" ng-model="holder.id">
+        <h5 style="color:green;margin-bottom:2%" id="success_delivery">Success! Tx ID: {{delivery_parsel}}</h5>
+        <h5 style="color:red;margin-bottom:2%"   id="error_parsel_id">Error: Please enter a valid Parsel Id</h5>
+        <h5 style="color:red;margin-bottom:2%"   id="error_delivered">Error: This Parsel already delivered</h5>
+        Enter a parsel id from available list above: <input class="form-control input-field" name="assetSelect" placeholder=" Ex: 6F5678I891" ng-model="parsel.id">
         <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="deliveryParsel()">
       </div>
     

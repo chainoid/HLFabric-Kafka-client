@@ -43,6 +43,19 @@ type Parsel struct {
 }
 
 /*
+ *  The random Id generator 
+*/
+func randomId() string {
+
+  // Call Seed, using current nanoseconds.
+  rand.Seed(int64(time.Now().Nanosecond()))
+  // Random int will be different each program execution.
+  value := rand.Int63()
+
+ return  fmt.Sprintf("%X", value) 
+}
+
+/*
   * The Init method *
   called when the Smart Contract "posta-chaincode" is instantiated by the network
   * Best practice is to have any Ledger initialization in separate function
@@ -96,10 +109,10 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 
 	i := 0
 	for i < len(parsel) {
-		fmt.Println("i is ", i)
+		
 		parselAsBytes, _ := json.Marshal(parsel[i])
 
-		APIstub.PutState(fmt.Sprintf("%X", rand.Int()), parselAsBytes)
+		APIstub.PutState(randomId(), parselAsBytes)
 		fmt.Println("Added", parsel[i])
 		i = i + 1
 	}
@@ -123,6 +136,8 @@ func (s *SmartContract) queryParsel(APIstub shim.ChaincodeStubInterface, args []
 		return shim.Error("Could not locate parsel")
 	}
 
+	fmt.Printf("- queryParsel:\n%s\n", parselAsBytes)
+
 	return shim.Success(parselAsBytes)
 }
 
@@ -134,17 +149,20 @@ func (s *SmartContract) queryParsel(APIstub shim.ChaincodeStubInterface, args []
 
 func (s *SmartContract) acceptParsel(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 7 {
-		return shim.Error("Incorrect number of arguments. Expecting 7")
+	if len(args) != 4 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}
 
-	var parsel = Parsel{Sender: args[1], SenderBranch: args[2], SenderTS: time.Now().Format(time.RFC3339), Receiver: args[4], ReceiverBranch: args[5], ReceiverTS: args[6]}
+	var parsel = Parsel{Sender: args[0], SenderBranch: args[1], SenderTS: time.Now().Format(time.RFC3339), Receiver: args[2], ReceiverBranch: args[3], ReceiverTS: ""}
 
 	parselAsBytes, _ := json.Marshal(parsel)
-	err := APIstub.PutState(fmt.Sprintf("%X", rand.Int()), parselAsBytes)
+	err := APIstub.PutState(randomId(), parselAsBytes)
+
 	if err != nil {
 		return shim.Error(fmt.Sprintf("Failed to record new parsel: %s", args[0]))
 	}
+
+	fmt.Printf("- acceptParsel:\n%s\n", parselAsBytes)
 
 	return shim.Success(nil)
 }
@@ -270,19 +288,30 @@ func (s *SmartContract) querySender(APIstub shim.ChaincodeStubInterface, args []
 */
 func (s *SmartContract) deliveryParsel(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 2")
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
 	parselAsBytes, _ := APIstub.GetState(args[0])
 	if parselAsBytes == nil {
-		return shim.Error("Could not locate parsel")
+
+        fmt.Printf("- deliveryParsel with id: %s Parsel not found \n", args[0])
+
+		return shim.Error("Parsel not found")
 	}
 	parsel := Parsel{}
 
 	json.Unmarshal(parselAsBytes, &parsel)
 	// Normally check that the specified argument is a valid holder of parsel
 	// we are skipping this check for this example
+	
+	if parsel.ReceiverTS != "" {
+
+		fmt.Printf("- deliveryParsel with id: %s Already delivered \n", args[0])
+
+		return shim.Error("Already delivered")
+	}
+
 	parsel.ReceiverTS = time.Now().Format(time.RFC3339)
 
 	parselAsBytes, _ = json.Marshal(parsel)
@@ -291,7 +320,7 @@ func (s *SmartContract) deliveryParsel(APIstub shim.ChaincodeStubInterface, args
 		return shim.Error(fmt.Sprintf("Failed to change status of parsel: %s", args[0]))
 	}
 
-	fmt.Printf("- deliveryParsel completed:\n%s\n", parselAsBytes)
+	fmt.Printf("- deliveryParsel:\n%s\n", parselAsBytes)
 
 	return shim.Success(nil)
 }
