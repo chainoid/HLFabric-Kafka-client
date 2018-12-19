@@ -80,7 +80,7 @@ services:
             - CORE_PEER_PROFILE_ENABLED=true
             - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
             #- CORE_LEDGER_STATE_STATEDATABASE=LevelDB
-            - CORE_LOGGING_LEVEL=DEBUG
+            - FABRIC_LOGGING_SPEC=${FABRIC_LOGGING_SPEC}
             - CORE_LOGGING_GOSSIP=${CORE_LOGGING_GOSSIP}
             - CORE_LOGGING_MSP=DEBUG
             # TLS settings
