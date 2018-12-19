@@ -106,7 +106,7 @@ git clone https://github.com/hyperledger/fabric.git
 - Clone this repository and enter the directory.
 ```bash
 git clone https://github.com/chainoid/HLFabric-Kafka-client.git
-cd Kafka-Fabric-Network
+cd HLFabric-Kafka-client
 ```
 NOTE : Give exec permissions to the shell scripts
 ```chmod 777 ./script-name.sh```
