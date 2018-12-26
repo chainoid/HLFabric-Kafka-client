@@ -7,6 +7,8 @@ var app = angular.module('application', []);
 // Angular Controller
 app.controller('appController', function($scope, appFactory){
 
+	$("#error_query_all").hide();
+
 	$("#success_holder").hide();
 	$("#success_create").hide();
 	$("#error_holder").hide();
@@ -21,11 +23,24 @@ app.controller('appController', function($scope, appFactory){
 	$("#error_parsel_id").hide();
 	$("#error_delivered").hide();
 	$("#success_delivery").hide();
+
 	
 			
 	$scope.queryAllParsels = function(){
 
 		appFactory.queryAllParsels(function(data){
+
+			$scope.query_all_parsels = data;
+
+			if ($scope.query_all_parsels == "Error of query request"){
+				console.log()
+				$("#error_query_all").show();
+				$("#all_parsels").hide();
+				
+			} else{
+				$("#all_parsels").show();
+				$("#error_query_all").hide();
+			
 			var array = [];
 			for (var i = 0; i < data.length; i++){
 				//parseInt(data[i].Key);
@@ -36,6 +51,7 @@ app.controller('appController', function($scope, appFactory){
 			    return a.senderTS.localeCompare(b.senderTS);
 			});
 			$scope.all_parsels = array;
+		  }
 		});
 
 		$("#history_parsel").hide();
@@ -55,8 +71,10 @@ app.controller('appController', function($scope, appFactory){
 			if ($scope.query_parsel == "Could not locate parsel"){
 				console.log()
 				$("#error_query").show();
+				$("#query_parsel").hide();
 			} else{
 				$("#error_query").hide();
+				$("#query_parsel").show();
 			}
 		});
 	}
@@ -74,12 +92,12 @@ app.controller('appController', function($scope, appFactory){
 			if ($scope.query_parsel == "Could not locate parsel"){
 				console.log()
 				$("#error_query").show();
+				$("#query_parsel").hide();
 			} else{
 				$("#error_query").hide();
+				$("#query_parsel").show();
 			}
 		});
-
-		$("#query_parsel").show();
 	}
 
 	$scope.querySender = function(){
@@ -116,12 +134,18 @@ app.controller('appController', function($scope, appFactory){
 		$("#query_parsel").hide();
 		$("#history_parsel").hide();
 
-		//alert(" ShowSenderParsels " + parsel.sender );
-
 		var name = parsel.sender;
 
 		appFactory.querySender(name, function(data){
-						
+		
+    		if (data  == "No parsels for sender"){
+				console.log()
+				$("#error_sender").show();
+				$("#sender_parsels").hide();
+			} else{
+				$("#error_sender").hide();
+				$("#sender_parsels").show();
+			
 			var array = [];
 			for (var i = 0; i < data.length; i++){
 				//parseInt(data[i].Key);
@@ -133,16 +157,8 @@ app.controller('appController', function($scope, appFactory){
 			});
 
 			$scope.sender_parsels = array;
-			
-			if (data  == "No parsels for sender"){
-				console.log()
-				$("#error_sender").show();
-			} else{
-				$("#error_sender").hide();
-			}
+		  }
 		});
-
-		$("#sender_parsels").show();
 	}
 	
 	$scope.historyParsel = function(){
@@ -175,12 +191,18 @@ app.controller('appController', function($scope, appFactory){
 		$("#query_parsel").hide();
 		$("#sender_parsels").hide();
 
-		//alert(" ShowHistoryParsel for ID=" + parsel.Key);
-
 		var historyId = parsel.Key;
 
 		appFactory.historyParsel(historyId, function(data){
-						           
+			
+			if (data  == "No history for parsel"){
+				console.log()
+				$("#error_history").show();
+				$("#history_parsel").hide();
+			} else{
+				$("#error_history").hide();
+				$("#history_parsel").show();
+			
 			var array = [];
 			for (var i = 0; i < data.length; i++){
 				
@@ -194,13 +216,7 @@ app.controller('appController', function($scope, appFactory){
 			    return a.senderTS.localeCompare(b.senderTS);
 			});
 			$scope.history_parsel = array;
-			
-			if (data  == "No history for parsel"){
-				console.log()
-				$("#error_history").show();
-			} else{
-				$("#error_history").hide();
-			}
+	      }
 		});
 
 		$("#history_parsel").show();

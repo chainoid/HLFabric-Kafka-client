@@ -72,7 +72,8 @@ return{
 		    // query_responses could have more than one  results if there multiple peers were used as targets
 		    if (query_responses && query_responses.length == 1) {
 		        if (query_responses[0] instanceof Error) {
-		            console.error("error from query = ", query_responses[0]);
+					console.error("error from query = ", query_responses[0]);
+					res.send("Error of query request");
 		        } else {
 		            console.log("Response is ", query_responses[0].toString());
 		            res.json(JSON.parse(query_responses[0].toString()));

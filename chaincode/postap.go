@@ -47,7 +47,7 @@ type Parsel struct {
 */
 func randomId() string {
 
-  // Call Seed, using current nanoseconds.
+	// Call Seed, using current nanoseconds.
   rand.Seed(int64(time.Now().Nanosecond()))
   // Random int will be different each program execution.
   value := rand.Int63()
@@ -109,7 +109,7 @@ func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Respo
 
 	i := 0
 	for i < len(parsel) {
-		
+		fmt.Println("i is ", i)
 		parselAsBytes, _ := json.Marshal(parsel[i])
 
 		APIstub.PutState(randomId(), parselAsBytes)
